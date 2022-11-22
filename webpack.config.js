@@ -14,6 +14,17 @@ module.exports = {
       template: "./src/index.html",
     }),
   ],
+  devServer: {
+    static: {
+          directory: path.join(__dirname, './dist'),
+    },
+    // proxy: {
+    //   "/socket.io": {
+    //     target: 'http://localhost:3001',
+    //     ws: true
+    // }
+    // }
+  },
   module: {
     rules: [
       {

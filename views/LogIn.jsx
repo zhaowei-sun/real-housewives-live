@@ -1,6 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import {SocketContext} from './context/socket.jsx';
+
 
 export default function LogIn(props) {
+
+    const socket = useContext(SocketContext);
 
     const [signUpUsername, setSignUpUsername] = useState('');
     const [signUpEmail, setSignUpEmail] = useState('');
@@ -22,38 +26,54 @@ export default function LogIn(props) {
 
     function passwordChangeHandler(e) {
         if (signUpMode) setSignUpPassword(e.target.value);
-        else setLogInEmail(e.target.value);
+        else setLogInPassword(e.target.value);
     }
 
     function signUpToLogIn() {
         setSignUpMode(prev => !prev);
     }
 
-    async function 
-
-    async function signUpClickHandler() {
+    function logInClickHandler() {
         try {
-            const response = await fetch('/signup', {
-              method: 'POST',
-              body: JSON.stringify({
-                username: signUpUsername,
-                email: signUpEmail,
-                password: signUpPassword,
-              }),
-              headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-              },
+            socket.emit("log_in", {
+                email: logInEmail,
+                password: logInPassword,
             });
-            if (!response.ok) {
-              throw new Error(`Error! status: ${response.status}`);
-            }
-            const result = await response.json();
-            console.log(result);
         } catch (err) {
             console.log(err);
         }
     }
+
+    function signUpClickHandler() {
+        try {
+            socket.emit("sign_up", {
+                username: signUpUsername,
+                email: signUpEmail,
+                password: signUpPassword,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        socket.on("sign_up_confirmation", (arg) => {
+            if (arg.error) {
+                //Try again!
+            } else if (arg.success) {
+                signUpToLogIn();
+            }
+        });
+
+        socket.on("log_in_confirmation", (arg) => {
+            if (arg.error) {
+                //Try again!
+            } else if (arg.success) {
+                props.logIn(logInEmail);
+            }
+        });
+
+    }, [socket])
 
     console.log(signUpEmail, signUpPassword, signUpUsername);
     console.log(logInEmail, logInPassword);
@@ -62,25 +82,22 @@ export default function LogIn(props) {
         {
             signUpMode ?
             <div className="signin-page">
-                <h1>Sign-Up Page</h1>
-                <input onChange={usernameChangeHandler} type="text" placeholder="Username"/>
-                <input onChange={emailChangeHandler} type="email" placeholder="Email"/>
-                <input onChange={passwordChangeHandler} type="password" placeholder="Password" />
+                <h1>SignUp Page</h1>
+                <input onChange={usernameChangeHandler} type="text" placeholder="Username" value={signUpUsername}/>
+                <input onChange={emailChangeHandler} type="email" placeholder="Email" value={signUpEmail}/>
+                <input onChange={passwordChangeHandler} type="password" placeholder="Password" value={signUpPassword}/>
                 <button onClick={signUpClickHandler}>Sign Up</button>
                 <button onClick={signUpToLogIn}>Log In</button>
             </div>
             :
             <div className="login-page">
                 <h1>Login Page</h1>
-                <input onChange={emailChangeHandler} type="email" placeholder="Email"/>
-                <input onChange={passwordChangeHandler} type="password" placeholder="Password" />
-                <button>Log In</button>
+                <input onChange={emailChangeHandler} type="email" placeholder="Email" value={logInEmail}/>
+                <input onChange={passwordChangeHandler} type="password" placeholder="Password" value={logInPassword}/>
+                <button onClick={logInClickHandler}>Log In</button>
                 <button onClick={signUpToLogIn}>Sign Up</button>
             </div>
         }
-        
-        
-        
     </div>
     )
 }

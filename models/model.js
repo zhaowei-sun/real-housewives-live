@@ -13,13 +13,24 @@ mongoose.connect(URI, {
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  username: { type: String, required: true },
-  email: { type: String, required: true },
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 });
 
 const User = mongoose.model('user', userSchema);
 
+const roomSchema = new Schema({
+  roomNumber: { type: Number, required: true, unique: true },
+  messages: [{ 
+    message: {type: String},
+    user: {type: String}
+  }],
+});
+
+const Room = mongoose.model('room', roomSchema);
+//Room.create({roomNumber: 1, messages:[]})
 module.exports = {
-  User
+  User,
+  Room
 };
