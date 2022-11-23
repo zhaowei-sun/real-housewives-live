@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import {SocketContext} from './context/socket.jsx';
+import roomIcons from './roomIcons.jsx';
 
 export default function LogIn(props) {
 
@@ -113,6 +114,11 @@ export default function LogIn(props) {
 
     return (
     <div className="login-wrapper">
+        <div className="login-decor" id="decor-dk"><img className="login-decor-img"  src={roomIcons.RHOBH.dk}/></div>
+        <div className="login-decor" id="decor-gb"><img className="login-decor-img"  src={roomIcons.RHOBH.gb}/></div>
+        <div className="login-decor" id="decor-js"><img className="login-decor-img"  src={roomIcons.RHOSLC.js}/></div>
+        <div className="login-decor" id="decor-lb"><img className="login-decor-img"  src={roomIcons.RHOSLC.lb}/></div>
+        <div className="login-decor" id="decor-cm"><img className="login-decor-img"  src={roomIcons.RHOBH.cm}/></div>
         <div className="login-title-div">
             <h1 className="login-title">REAL</h1>
             <h1 className="login-title">HOUSEWIVES</h1>
