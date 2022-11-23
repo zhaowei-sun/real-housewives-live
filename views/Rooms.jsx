@@ -20,17 +20,31 @@ export default function Rooms(props) {
     }, [socket]);
 
     function addToFavorites(room) {
-        socket.emit('add_to_favorites', {
-            room: room,
-            email: props.userEmail
-        });
+        if (props.isSuperUser) {
+            socket.emit('super_add_to_favorites', {
+                room: room,
+                email: props.userEmail
+            });
+        } else {
+            socket.emit('add_to_favorites', {
+                room: room,
+                email: props.userEmail
+            });
+        }
     }
 
     function removeFromFavorites(room) {
-        socket.emit('remove_from_favorites', {
-            room: room,
-            email: props.userEmail
-        });
+        if (props.isSuperUser) {
+            socket.emit('super_remove_from_favorites', {
+                room: room,
+                email: props.userEmail
+            });
+        } else {
+            socket.emit('remove_from_favorites', {
+                room: room,
+                email: props.userEmail
+            });
+        }
     }
 
     const roomsDisplay = rooms.map((r, idx) => {

@@ -46,8 +46,10 @@ export default function ChatScreen(props) {
     }, [])
 
     const messagesDisplay = messages.map((m, idx) => {
+        const superUser = m.user === props.userEmail && props.isSuperUser && props.superUserRoom === props.selectedRoom;
+        let messageClasses = `message ${m.user === props.userEmail ? 'my-message' : ''} ${superUser ? 'super-user-message' : ''}`;
         return (
-            <p key={idx + 'message'}>{m.message}</p>
+            <p key={idx + 'message'} className={messageClasses}>{m.message}</p>
         )
     })
 

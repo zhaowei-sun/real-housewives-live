@@ -1,19 +1,5 @@
 const { SuperUser, Room } = require('../models/model.js');
 
-const raw_data_sp = [
-    {
-        username: 'Jen Shah',
-        email: 'jenshah@g.com',
-        room: 'JenS',
-        password: '666666',
-        favorites: []
-    }
-]
-
-raw_data_sp.forEach(sp => {
-    SuperUser.create(sp);
-})
-
 const raw_data = [
     {
         room: 'LisaB',
@@ -146,4 +132,20 @@ const raw_data = [
 raw_data.forEach(room => {
     Room.create(room);
 })
+
+const raw_data_sp = [
+    {
+        username: 'Jen Shah',
+        email: 'jenshah@g.com',
+        room: 'JenS',
+        password: '666666',
+        favorites: []
+    }
+]
+
+raw_data_sp.forEach(sp => {
+    SuperUser.create(sp);
+})
+
+
 //Room.create({room: 3, messages: []})

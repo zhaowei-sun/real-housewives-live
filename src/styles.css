@@ -20,6 +20,14 @@ body {
     overflow-x: hidden;
 }
 
+.my-message {
+    color: blue;
+}
+
+.super-user-message {
+    color: green;
+}
+
 .room-div {
     height: 100px;
     width: 100px;

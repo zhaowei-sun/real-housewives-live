@@ -70,13 +70,20 @@ export default function Main(props) {
                 userEmail={props.userEmail} 
                 username={props.username} 
                 joinRoom={roomClickHandler}
-                favorites={favorites}/>
+                favorites={favorites}
+                isSuperUser={props.isSuperUser}
+                superUserRoom={props.superUserRoom}
+                />
                 :
                 <ChatScreen 
                 userEmail={props.userEmail} 
                 username={props.username}
                 selectedRoom={selectedRoom}
-                switchToRoomMode={() => setRoomMode(true)}/>
+                switchToRoomMode={() => setRoomMode(true)}
+                isSuperUser={props.isSuperUser}
+                superUserRoom={props.superUserRoom}
+                />
+                
             }
             </div>
             

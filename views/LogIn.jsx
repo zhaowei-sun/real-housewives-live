@@ -103,6 +103,8 @@ export default function LogIn(props) {
             if (arg.error) {
                 //Try again!
             } else if (arg.success) {
+                props.logIn();
+                props.setUser(arg.email, arg.name);
                 props.setSuperUser(arg.room);
             }
         });

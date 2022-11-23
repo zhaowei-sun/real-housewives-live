@@ -97,7 +97,7 @@ io.on("connection", (socket) => {
             { $push: 
                 { messages: 
                     {message: data.message, 
-                        user: data.user 
+                        user: data.email
                     } 
                 }
             }, 
@@ -142,8 +142,35 @@ io.on("connection", (socket) => {
             })
     })
 
+    socket.on("super_add_to_favorites", (data) => {
+        console.log('add', data);
+        SuperUser.findOneAndUpdate(
+            { email: data.email },
+            { $push: 
+                {favorites: { room: data.room }}
+            }, 
+            {new: true}, 
+            (err, user) => {
+                console.log(user);
+                socket.emit("add_to_favorites_confirmation", user);
+            })
+    })
+
     socket.on("remove_from_favorites", (data) => {
         User.findOneAndUpdate(
+            {email: data.email},
+            { $pull: 
+                {favorites: { room: data.room }}
+            }, 
+            {new: true}, 
+            (err, user) => {
+                console.log(user);
+                socket.emit("remove_from_favorites_confirmation", user);
+            })
+    })
+
+    socket.on("super_remove_from_favorites", (data) => {
+        SuperUser.findOneAndUpdate(
             {email: data.email},
             { $pull: 
                 {favorites: { room: data.room }}
