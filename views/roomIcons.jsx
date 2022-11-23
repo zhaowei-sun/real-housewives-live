@@ -26,8 +26,18 @@ const RHOBH = {
     cm, dj, dk, ej, gb, kh, kr, lr, sz, ss
 }
 
-const roomIcons = {
-    RHOSLC, RHOBH
+import blueheart from '../src/assets/blue-heart-transparent-background-4.png';
+import greyheart from '../src/assets/grey-heart-transparent-background-4.png';
+
+const favs = {
+    fav: blueheart,
+    unfav: greyheart
 }
+
+const roomIcons = {
+    RHOSLC, RHOBH, favs
+}
+
+
 
 export default roomIcons;

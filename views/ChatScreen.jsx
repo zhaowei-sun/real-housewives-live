@@ -69,9 +69,10 @@ export default function ChatScreen(props) {
             
             <div className="message-screen">
                    <ScrollToBottom className="message-container">
-                    {messagesDisplay}
+                   {messagesDisplay}
                     </ScrollToBottom>
             </div>
+            
             <div className="send-screen">
                 <input onChange={inputChangeHandler} type="text" placeholder="Type something..." value={message}/>
                 <button onClick={sendMessage}>Send</button>

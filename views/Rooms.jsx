@@ -58,13 +58,15 @@ export default function Rooms(props) {
             <img className="room-icon" src={roomIcons[r.roomFranchise][r.roomIcon]}/>
         </div>
         <p>{r.roomName}</p>
+        <div className="room-buttons">
         <button key={idx + 'joinroom'} onClick={() => {props.joinRoom(r.room)}}>Join Room</button>
         {props.favorites.includes(r.room) 
         ? 
-        <button key={idx + 'rmfav'} onClick={() => {removeFromFavorites(r.room)}}>UnFav</button> 
+        <img key={idx + 'rmfav'} onClick={() => {removeFromFavorites(r.room)}} className="fav-icon" src={roomIcons.favs.fav}/>
         :
-        <button key={idx + 'addfav'} onClick={() => {addToFavorites(r.room)}}>Fav</button>
+        <img key={idx + 'addfav'} onClick={() => {addToFavorites(r.room)}} className="fav-icon" src={roomIcons.favs.unfav}/>
         }
+        </div>
         </div>)
     })
     return (
@@ -72,7 +74,7 @@ export default function Rooms(props) {
             <h1 className="rooms-title">Rooms</h1>
             <div className="franchises">
             <div className="franchise" onClick={() => setFranchise('RHOBH')}>Real Housewives of Beverly Hills</div>
-            <p>|</p>
+            <p className="franchise">|</p>
             <div className="franchise" onClick={() => setFranchise('RHOSLC')}>Real Housewives of Salt Lake City</div>
             </div>
             <div className="rooms-display">
