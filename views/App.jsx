@@ -5,15 +5,35 @@ import LogIn from './LogIn.jsx';
 
 export default function App(props) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState('');
+    const [isSuperUser, setIsSuperUser] = useState(false);
+    const [superUserRoom, setSuperUserRoom] = useState();
+    const [userEmail, setUserEmail] = useState('');
+    const [username, setUsername] = useState('');
 
-    function logIn(email) {
+    function logIn() {
         setIsLoggedIn(true);
-        setUser(user);
     }
+
+    function setUser(userEmail, username) {
+        setUserEmail(userEmail);
+        setUsername(username);
+    }
+
+    function setSuperUser(room) {
+        setIsSuperUser(true);
+        setSuperUserRoom(room);
+    }
+
     return (
         <SocketContext.Provider value={socket}>
-            {isLoggedIn ? <Main user={user} /> : <LogIn logIn={(name) => logIn(name)} />}
+            {isLoggedIn ? 
+            <Main userEmail={userEmail} username={username} isSuperUser={isSuperUser} superUserRoom={superUserRoom}/> 
+            : 
+            <LogIn 
+            logIn={(name) => logIn(name)} 
+            setUser={(userEmail, username) => setUser(userEmail, username)} 
+            setSuperUser={setSuperUser}
+            />}
         </SocketContext.Provider>
     )
 }

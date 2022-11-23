@@ -3,7 +3,7 @@ const path = require('path');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const http = require('http');
-const { User, Room } = require('../models/model.js');
+const { SuperUser, User, Room } = require('../models/model.js');
 
 const app = express();
 const port = 3001;
@@ -27,12 +27,15 @@ io.on("connection", (socket) => {
     console.log(`User connected: ${socket.id}`);
 
     socket.on("sign_up", (data) => {
-        User.create(data, (err, user) => {
+        console.log(data);
+        const {username, email, password} = data;
+        User.create({username, email, password, favorites: []}, (err, user) => {
             if (err) {
                 socket.emit("sign_up_confirmation", { error: 'something went wrong, try again!'});
+            } else {
+                socket.emit("sign_up_confirmation", { success: 'you successfully created an account!'});
             }
-            console.log(user);
-            socket.emit("sign_up_confirmation", { success: 'you successfully created an account!'});
+            
         })
     });
 
@@ -43,19 +46,54 @@ io.on("connection", (socket) => {
             }
             if (user === null) {
                 socket.emit("log_in_confirmation", { error: 'invalid login information, try again!'});
+            } else {
+                socket.emit("log_in_confirmation", { success: 'you logged in successfully!', name: user.username, email: user.email});
             }
-            socket.emit("log_in_confirmation", { success: 'you logged in successfully!'});
+        })
+    })
+
+    socket.on("super_log_in", (data) => {
+        SuperUser.findOne(data, (err, user) => {
+            if (err) {
+                socket.emit("super_log_in_confirmation", { error: 'something went wrong, try again!'});
+            }
+            if (user === null) {
+                socket.emit("super_log_in_confirmation", { error: 'invalid login information, try again!'});
+            } else {
+                socket.emit("super_log_in_confirmation", { success: 'you logged in successfully!', name: user.username, email: user.email, room: user.room});
+            }
+        })
+    })
+
+    socket.on("request_rooms", (data) => {
+        Room.find({}, (err, data) => {
+            socket.emit("load_rooms", data);
         })
     })
 
     socket.on("join_room", (data) => {
-        socket.join(data);
-        console.log(`User with ID: ${socket.id} joined room ${data}`);
+        socket.join(data.room);
+        console.log(`User with ID: ${socket.id} joined room ${data.room}`);
+        socket.emit("join_room_confirmation", {
+            success: `you joined room ${data.room} successfully`,
+            selectedRoom: data.room
+        })
+    })
+
+    socket.on("load_messages", (data) => {
+        Room.findOne({ room: data.room },
+            (err, messages) => {
+                if (err) {
+                    socket.emit("load_messages_confirmation", { error: 'something went wrong, try again!'});
+                }
+                console.log(messages);
+                io.to(data.room).emit("load_messages_confirmation", messages);
+            })
     })
 
     socket.on("send_message", (data) => {
         console.log('backend', data);
-        Room.findOneAndUpdate({ roomNumber: data.room },  
+        Room.findOneAndUpdate({ room: data.room },  
             { $push: 
                 { messages: 
                     {message: data.message, 
@@ -69,10 +107,52 @@ io.on("connection", (socket) => {
                     socket.emit("send_message_confirmation", { error: 'something went wrong, try again!'});
                 }
                 console.log(messages);
-                socket.emit("send_message_confirmation", messages);
+                console.log('data.room', data.room);
+                io.to(data.room).emit("send_message_confirmation", messages);
                 
             })
-        socket.to(data.room).emit("receive_message", data);
+    })
+
+    socket.on("request_favorites", (data) => {
+        User.findOne({email: data.email}, (err, user) => {
+            socket.emit("load_favorites", user);
+        })
+    })
+
+    socket.on("super_request_favorites", (data) => {
+        SuperUser.findOne({email: data.email}, (err, user) => {
+            socket.emit("load_favorites", user);
+        })
+    })
+
+    socket.on("add_to_favorites", (data) => {
+        console.log(data.email);
+        User.findOne({ email: data.email }, (data) => {
+            console.log('findone', data);
+        })
+        User.findOneAndUpdate(
+            { email: data.email },
+            { $push: 
+                {favorites: { room: data.room }}
+            }, 
+            {new: true}, 
+            (err, user) => {
+                console.log(user);
+                socket.emit("add_to_favorites_confirmation", user);
+            })
+    })
+
+    socket.on("remove_from_favorites", (data) => {
+        User.findOneAndUpdate(
+            {email: data.email},
+            { $pull: 
+                {favorites: { room: data.room }}
+            }, 
+            {new: true}, 
+            (err, user) => {
+                console.log(user);
+                socket.emit("remove_from_favorites_confirmation", user);
+            })
     })
 
     socket.on("disconnect", () => {

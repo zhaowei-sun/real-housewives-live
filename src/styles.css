@@ -7,3 +7,40 @@ body {
     width: 500px;
     background-color: aliceblue;
 }
+
+.rooms {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.message-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.room-div {
+    height: 100px;
+    width: 100px;
+    background-color: pink;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.room-icon {
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+}
+
+.main {
+    display: flex;
+}
+
+.profile {
+    width: 20%;
+    background-color: blue;
+}

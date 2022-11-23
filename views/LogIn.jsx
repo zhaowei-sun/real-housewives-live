@@ -1,7 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import {SocketContext} from './context/socket.jsx';
 
-
 export default function LogIn(props) {
 
     const socket = useContext(SocketContext);
@@ -14,6 +13,10 @@ export default function LogIn(props) {
     const [logInEmail, setLogInEmail] = useState('');
     const [logInPassword, setLogInPassword] = useState('');
 
+    const [superLoginMode, setSuperLoginMode] = useState(false);
+    const [superLogInEmail, setSuperLogInEmail] = useState('');
+    const [superLogInPassword, setSuperLogInPassword] = useState('');
+
     function usernameChangeHandler(e) {
         setSignUpUsername(e.target.value);
     }
@@ -21,12 +24,19 @@ export default function LogIn(props) {
     function emailChangeHandler(e) {
         if (signUpMode) setSignUpEmail(e.target.value);
         else setLogInEmail(e.target.value);
-        
+    }
+
+    function superEmailChangeHandler(e) {
+        setSuperLogInEmail(e.target.value)
     }
 
     function passwordChangeHandler(e) {
         if (signUpMode) setSignUpPassword(e.target.value);
         else setLogInPassword(e.target.value);
+    }
+
+    function superPasswordChangeHandler(e) {
+        setSuperLogInPassword(e.target.value)
     }
 
     function signUpToLogIn() {
@@ -42,6 +52,21 @@ export default function LogIn(props) {
         } catch (err) {
             console.log(err);
         }
+    }
+
+    function superlogInClickHandler() {
+        try {
+            socket.emit("super_log_in", {
+                email: superLogInEmail,
+                password: superLogInPassword,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    function superModeClickHandler() {
+        setSuperLoginMode(true);
     }
 
     function signUpClickHandler() {
@@ -69,18 +94,31 @@ export default function LogIn(props) {
             if (arg.error) {
                 //Try again!
             } else if (arg.success) {
-                props.logIn(logInEmail);
+                props.logIn();
+                props.setUser(arg.email, arg.name);
+            }
+        });
+
+        socket.on("super_log_in_confirmation", (arg) => {
+            if (arg.error) {
+                //Try again!
+            } else if (arg.success) {
+                props.setSuperUser(arg.room);
             }
         });
 
     }, [socket])
 
-    console.log(signUpEmail, signUpPassword, signUpUsername);
-    console.log(logInEmail, logInPassword);
     return (
     <div>
-        {
-            signUpMode ?
+        {   superLoginMode ?
+            <div className="super-login-page">
+                <input onChange={superEmailChangeHandler} type="email" placeholder="Email" value={superLogInEmail}/>
+                <input onChange={superPasswordChangeHandler} type="password" placeholder="Password" value={superLogInPassword}/>
+                <button onClick={superlogInClickHandler}>Log In</button>
+            </div>
+           :
+            (signUpMode ?
             <div className="signin-page">
                 <h1>SignUp Page</h1>
                 <input onChange={usernameChangeHandler} type="text" placeholder="Username" value={signUpUsername}/>
@@ -96,7 +134,8 @@ export default function LogIn(props) {
                 <input onChange={passwordChangeHandler} type="password" placeholder="Password" value={logInPassword}/>
                 <button onClick={logInClickHandler}>Log In</button>
                 <button onClick={signUpToLogIn}>Sign Up</button>
-            </div>
+                <button onClick={superModeClickHandler}>Log In as a Housewife</button>
+            </div>)
         }
     </div>
     )

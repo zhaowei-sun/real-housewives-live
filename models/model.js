@@ -16,12 +16,18 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  favorites: [{
+    room: { type: String },
+  }]
 });
 
 const User = mongoose.model('user', userSchema);
 
 const roomSchema = new Schema({
-  roomNumber: { type: Number, required: true, unique: true },
+  room: { type: String, required: true, unique: true },
+  roomFranchise: { type: String, required: true},
+  roomName: { type: String, required: true},
+  roomIcon: {type: String, required: true},
   messages: [{ 
     message: {type: String},
     user: {type: String}
@@ -29,8 +35,21 @@ const roomSchema = new Schema({
 });
 
 const Room = mongoose.model('room', roomSchema);
-//Room.create({roomNumber: 1, messages:[]})
+
+const superUserSchema = new Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  room: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  favorites: [{
+    room: { type: String },
+  }]
+})
+
+const SuperUser = mongoose.model('superuser', superUserSchema);
+
 module.exports = {
   User,
-  Room
+  Room,
+  SuperUser
 };
