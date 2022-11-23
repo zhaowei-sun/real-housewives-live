@@ -18,7 +18,8 @@ export default function ChatScreen(props) {
             room: props.selectedRoom,
             email: props.userEmail,
             username: props.username,
-            message: message
+            message: message,
+            superUserRoom: props.superUserRoom || 'none'
         })
     }
 
@@ -46,24 +47,35 @@ export default function ChatScreen(props) {
     }, [])
 
     const messagesDisplay = messages.map((m, idx) => {
-        const superUser = m.user === props.userEmail && props.isSuperUser && props.superUserRoom === props.selectedRoom;
-        let messageClasses = `message ${m.user === props.userEmail ? 'my-message' : ''} ${superUser ? 'super-user-message' : ''}`;
+        const mySuperUser = m.user === props.userEmail && props.isSuperUser && props.superUserRoom === props.selectedRoom;
+        const superUser = props.selectedRoom === m.super;
+        const messageDivClasses = `message-div ${m.user === props.userEmail ? 'my-message-div' : ''} `;
+        const messageClasses = `message ${m.user === props.userEmail ? 'my-message' : ''} ${superUser ? 'super-user-message' : ''} ${mySuperUser? 'my-super-user-message': ''}`;
         return (
-            <p key={idx + 'message'} className={messageClasses}>{m.message}</p>
+            <div className={messageDivClasses}>
+                <p className='message-user'>{m.username} :</p>
+                <p key={idx + 'message'} className={messageClasses}>{m.message}</p>
+            </div>
+            
         )
     })
 
     return (
-        <div>
-            <div>{chatroomName}</div>
-            <button onClick={() => {props.switchToRoomMode()}}>Exit</button>
-                <div className="screen">
+        <div className="chatscreen">
+            <div className="chatscreen-header">
+                <div className="chatscreen-header-name">{chatroomName}'s Chatroom</div>
+                <button className="exit-btn" onClick={() => {props.switchToRoomMode()}}>Exit</button>
+            </div>
+            
+            <div className="message-screen">
                    <ScrollToBottom className="message-container">
                     {messagesDisplay}
                     </ScrollToBottom>
-                </div>
-            <input onChange={inputChangeHandler} type="text" placeholder="Type something..." value={message}/>
-            <button onClick={sendMessage}>Send</button>
+            </div>
+            <div className="send-screen">
+                <input onChange={inputChangeHandler} type="text" placeholder="Type something..." value={message}/>
+                <button onClick={sendMessage}>Send</button>
+            </div>
         </div>
     )
 }

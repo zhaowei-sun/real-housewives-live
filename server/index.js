@@ -92,14 +92,19 @@ io.on("connection", (socket) => {
     })
 
     socket.on("send_message", (data) => {
-        console.log('backend', data);
+        
+        const messageData = {
+            message: data.message, 
+            user: data.email,
+            super: data.superUserRoom,
+            username: data.username
+        } 
+
+        console.log('backend', messageData);
+
         Room.findOneAndUpdate({ room: data.room },  
             { $push: 
-                { messages: 
-                    {message: data.message, 
-                        user: data.email
-                    } 
-                }
+                { messages: messageData }
             }, 
             {new: true},
             (err, messages) => {
@@ -107,7 +112,6 @@ io.on("connection", (socket) => {
                     socket.emit("send_message_confirmation", { error: 'something went wrong, try again!'});
                 }
                 console.log(messages);
-                console.log('data.room', data.room);
                 io.to(data.room).emit("send_message_confirmation", messages);
                 
             })

@@ -25,15 +25,18 @@ export default function App(props) {
     }
 
     return (
-        <SocketContext.Provider value={socket}>
-            {isLoggedIn ? 
-            <Main userEmail={userEmail} username={username} isSuperUser={isSuperUser} superUserRoom={superUserRoom}/> 
-            : 
-            <LogIn 
-            logIn={(name) => logIn(name)} 
-            setUser={(userEmail, username) => setUser(userEmail, username)} 
-            setSuperUser={setSuperUser}
-            />}
-        </SocketContext.Provider>
+        <div className="main-border">
+            <SocketContext.Provider value={socket}>
+                {isLoggedIn ? 
+                <Main userEmail={userEmail} username={username} isSuperUser={isSuperUser} superUserRoom={superUserRoom}/> 
+                : 
+                <LogIn 
+                logIn={(name) => logIn(name)} 
+                setUser={(userEmail, username) => setUser(userEmail, username)} 
+                setSuperUser={setSuperUser}
+                />}
+            </SocketContext.Provider>
+        </div>
+        
     )
 }

@@ -30,7 +30,9 @@ const roomSchema = new Schema({
   roomIcon: {type: String, required: true},
   messages: [{ 
     message: {type: String},
-    user: {type: String}
+    user: {type: String},
+    username: {type: String},
+    super: {type: String}
   }],
 });
 

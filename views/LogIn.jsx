@@ -112,33 +112,42 @@ export default function LogIn(props) {
     }, [socket])
 
     return (
-    <div>
+    <div className="login-wrapper">
+        <div className="login-title-div">
+            <h1 className="login-title">REAL</h1>
+            <h1 className="login-title">HOUSEWIVES</h1>
+            <h1 className="login-title login-title-decor">LIVE</h1>
+        </div>
+        <div className="login-main-div">
         {   superLoginMode ?
             <div className="super-login-page">
+                <h1 className="login-sign">Login as a Housewife</h1>
                 <input onChange={superEmailChangeHandler} type="email" placeholder="Email" value={superLogInEmail}/>
                 <input onChange={superPasswordChangeHandler} type="password" placeholder="Password" value={superLogInPassword}/>
-                <button onClick={superlogInClickHandler}>Log In</button>
+                <button onClick={superlogInClickHandler} className="hl-btn">Log In</button>
             </div>
            :
             (signUpMode ?
             <div className="signin-page">
-                <h1>SignUp Page</h1>
+                <h1 className="login-sign">Sign-Up</h1>
                 <input onChange={usernameChangeHandler} type="text" placeholder="Username" value={signUpUsername}/>
                 <input onChange={emailChangeHandler} type="email" placeholder="Email" value={signUpEmail}/>
                 <input onChange={passwordChangeHandler} type="password" placeholder="Password" value={signUpPassword}/>
-                <button onClick={signUpClickHandler}>Sign Up</button>
-                <button onClick={signUpToLogIn}>Log In</button>
+                <button onClick={signUpClickHandler} className="hl-btn">Sign Up</button>
+                <button onClick={signUpToLogIn} className="reg-btn">Log In</button>
             </div>
             :
             <div className="login-page">
-                <h1>Login Page</h1>
+                <h1 className="login-sign">Login</h1>
                 <input onChange={emailChangeHandler} type="email" placeholder="Email" value={logInEmail}/>
                 <input onChange={passwordChangeHandler} type="password" placeholder="Password" value={logInPassword}/>
-                <button onClick={logInClickHandler}>Log In</button>
-                <button onClick={signUpToLogIn}>Sign Up</button>
-                <button onClick={superModeClickHandler}>Log In as a Housewife</button>
+                <button onClick={logInClickHandler} className="hl-btn">Log In</button>
+                <button onClick={signUpToLogIn} className="reg-btn">Sign Up</button>
+                <button onClick={superModeClickHandler} className="special-btn">Log In as a Housewife</button>
             </div>)
         }
+        </div>
+        
     </div>
     )
 }

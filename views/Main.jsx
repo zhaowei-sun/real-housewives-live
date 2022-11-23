@@ -53,10 +53,7 @@ export default function Main(props) {
     }
 
     return (
-        <div>
-            <Nav />
-            <h1>Main Room</h1> 
-            <div className="main">
+        <div className="main-wrapper">
             <Profile 
             userEmail={props.userEmail} 
             username={props.username} 
@@ -85,9 +82,6 @@ export default function Main(props) {
                 />
                 
             }
-            </div>
-            
-            
         </div>
     )
 }

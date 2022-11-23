@@ -7,6 +7,7 @@ export default function Rooms(props) {
     const socket = useContext(SocketContext);
 
     const [rooms, setRooms] = useState([]);
+    const [franchise, setFranchise] = useState('RHOBH');
 
     useEffect(() => {
         socket.emit('request_rooms', {});
@@ -47,8 +48,12 @@ export default function Rooms(props) {
         }
     }
 
-    const roomsDisplay = rooms.map((r, idx) => {
-        return (<div key={idx + 'roomdiv'}>
+    const roomsPreDisplay = rooms.filter((r) => {
+        return r.roomFranchise === franchise;
+    })
+
+    const roomsDisplay = roomsPreDisplay.map((r, idx) => {
+        return (<div key={idx + 'roomdiv'} className="room-present">
         <div key={idx + 'room'} onClick={() => {props.joinRoom(r.room)}} className='room-div'>
             <img className="room-icon" src={roomIcons[r.roomFranchise][r.roomIcon]}/>
         </div>
@@ -56,16 +61,21 @@ export default function Rooms(props) {
         <button key={idx + 'joinroom'} onClick={() => {props.joinRoom(r.room)}}>Join Room</button>
         {props.favorites.includes(r.room) 
         ? 
-        <button key={idx + 'rmfav'} onClick={() => {removeFromFavorites(r.room)}}>Remove from Favorites</button> 
+        <button key={idx + 'rmfav'} onClick={() => {removeFromFavorites(r.room)}}>UnFav</button> 
         :
-        <button key={idx + 'addfav'} onClick={() => {addToFavorites(r.room)}}>Add to Favorites</button>
+        <button key={idx + 'addfav'} onClick={() => {addToFavorites(r.room)}}>Fav</button>
         }
         </div>)
     })
     return (
-        <div>
-            <h1>Rooms</h1>
-            <div className="rooms">
+        <div className="rooms">
+            <h1 className="rooms-title">Rooms</h1>
+            <div className="franchises">
+            <div className="franchise" onClick={() => setFranchise('RHOBH')}>Real Housewives of Beverly Hills</div>
+            <p>|</p>
+            <div className="franchise" onClick={() => setFranchise('RHOSLC')}>Real Housewives of Salt Lake City</div>
+            </div>
+            <div className="rooms-display">
                 {roomsDisplay}
             </div>
         </div>
