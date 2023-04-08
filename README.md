@@ -28,15 +28,11 @@ This app was built using the following tech stack:
 
 This project is still in development. If you'd like to check it out, please follow the instructions below.
 
-<br />
-
 #### STEP 1 — Clone the repository
 
 ```sh
 git clone https://github.com/zhaowei-sun/real-housewives-live/
 ```
-
-<br />
 
 #### STEP 2 — Start the application! The `npm start` script will start both our frontend and backend interface.
 
@@ -44,15 +40,11 @@ git clone https://github.com/zhaowei-sun/real-housewives-live/
 npm start
 ```
 
-<br />
-
 #### STEP 3 — Navigate to localhost:8080 to try out the chat room application!
 
 ```sh
 http://localhost:8080/
 ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Roadmap
 Here are some features that we plan to implement in the future:
