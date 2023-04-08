@@ -1,17 +1,17 @@
-<h1>Real Housewives Live Chat Room</h1>
+# Real Housewives Live Chat Room
 
 Welcome to the Real Housewives Live Chat Room app! This is a platform for Real Housewives fans to communicate with each other and engage with Bravolebrities, the reality TV stars from Bravo shows.
 
-<h3>About</h3>
+## About
 The Real Housewives Live Chat Room app provides a virtual space for Real Housewives fans to connect and discuss their favorite shows, characters, and episodes. Users can chat with each other in real-time and participate in group discussions. The app also provides an opportunity for fans to engage with Bravolebrities and ask them questions.
 
-<p></p>
+<br />
 
 Here are some screenshots of the app:
 
 ![Screenshot](./screenshots.png)
 
-<h3>Built With</h3>
+## Built With
 
 This app was built using the following tech stack:
 
@@ -24,7 +24,37 @@ This app was built using the following tech stack:
 
 </ul>
 
-<h3>Roadmap</h3>
+## Getting Started
+
+This project is still in development. If you'd like to check it out, please follow the instructions below.
+
+<br />
+
+#### STEP 1 — Clone the repository
+
+```sh
+git clone https://github.com/zhaowei-sun/real-housewives-live/
+```
+
+<br />
+
+#### STEP 2 — Start the application! The `npm start` script will start both our frontend and backend interface.
+
+```sh
+npm start
+```
+
+<br />
+
+#### STEP 3 — Navigate to localhost:8080 to try out the chat room application!
+
+```sh
+http://localhost:8080/
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Roadmap
 Here are some features that we plan to implement in the future:
 
 <p></p>
@@ -40,12 +70,12 @@ Here are some features that we plan to implement in the future:
 </ul></li>
 </ul>
 
-<p></p>
+<br />
 
 See the <a href="https://github.com/zhaowei-sun/real-housewives-live/issues" target="_blank">open issues</a> for a full list of proposed features (and known issues).
 
-<h3>License</h3>
+## License
 Distributed under the MIT License. See LICENSE.txt for more information.
 
-<h3>Show Your Support</h3>
+## Show Your Support
 If you find this project helpful, please give it a ⭐️.
